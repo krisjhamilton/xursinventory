@@ -2,19 +2,25 @@ var UI = require('ui');
 var ajax = require('ajax');
 var Vector2 = require('vector2');
 
-var parseFeed = function(data, quantity) {
+var parseFeed = function(data) {
 	var items = [];
-	/*for(var i = 0; i < quantity; i++) {
-		//var itemName = data.Response.definitions.items(i).itemName;
-		var itemTypeName = data.Response.definitions.items(i).itemTypeName;
-		items.push({
-			title: "Test",
-			subtitle: itemTypeName
-		});
-	}*/
-
-
 	var placeHolder = data.Response.definitions.items;
+	//console.log(Object.keys(placeHolder).length);
+
+	/*
+		for(var key in placeHolder){
+			var value = placeHolder[key];
+			var itemName = value.itemName;
+			var itemTypeName = value.itemTypeName;
+			//console.log(value.itemName);
+			//console.log(value.itemTypeName);
+			items.push({
+				title: itemName,
+				subtitle: itemTypeName
+			});
+		}*/
+	//Another way to do this...
+
 	for (var key in placeHolder) {
 		if (placeHolder.hasOwnProperty(key)) {
 			var val = placeHolder[key];
@@ -29,20 +35,20 @@ var parseFeed = function(data, quantity) {
 		}
 	}
 
+
 	return items;
 };
 
 // Show splash screen while waiting for data
 var splashWindow = new UI.Window();
-var splashWindow2 = new UI.Window();
-/*
+
 var logo_image = new UI.Image({
 	position: new Vector2(58, 20),
 	size: new Vector2(28, 26),
 	compositing: 'invert',
 	image: 'images/main_logo.png'
 });
-*/
+
 
 // Text element to inform user
 var text = new UI.Text({
@@ -69,21 +75,23 @@ var text2 = new UI.Text({
 });	
 
 splashWindow.add(text);
-//splashWindow.add(logo_image);
+splashWindow.add(logo_image);
 splashWindow.show();
 
 
 ajax(
 	{ 
-		url: 'https://www.bungie.net/platform/destiny/advisors/xur/?definitions=true',
+		url:  'http://krisjhamilton.github.io/xurtest.json', //'https://www.bungie.net/platform/destiny/advisors/xur/?definitions=true',
 		type: 'json'
 	},
 	function(data) {
-		var xurHere = //data.Response.definitions.vendorDetails['2796397637'].summary.visible;
-		console.log(xurHere);
+		var xurHere = data.Response.definitions.vendorDetails['2796397637'].summary.visible;
+		//console.log(xurHere);
 		if(xurHere === true){
-			var menuItems = parseFeed(data, 10);
+			var menuItems = parseFeed(data);
 			var resultsMenu = new UI.Menu({
+				highlightBackgroundColor: 'black',
+				highlightTextColor: 'white',
 				sections: [{
 					title: "Xur's Items",
 					items: menuItems
@@ -92,11 +100,7 @@ ajax(
 			resultsMenu.show();
 			splashWindow.hide();
 		}else{
-			
-			splashWindow2.add(text2);
-			//splashWindow.add(logo_image);
-			splashWindow2.show();
-			splashWindow.hide();
+			splashWindow.add(text2);
 		}
 	},
 	function( error ) {
