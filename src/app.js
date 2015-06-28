@@ -5,21 +5,7 @@ var Vector2 = require('vector2');
 var parseFeed = function(data) {
 	var items = [];
 	var placeHolder = data.Response.definitions.items;
-	//console.log(Object.keys(placeHolder).length);
-
-	/*
-		for(var key in placeHolder){
-			var value = placeHolder[key];
-			var itemName = value.itemName;
-			var itemTypeName = value.itemTypeName;
-			//console.log(value.itemName);
-			//console.log(value.itemTypeName);
-			items.push({
-				title: itemName,
-				subtitle: itemTypeName
-			});
-		}*/
-	//Another way to do this...
+	//console.log(Object.keys(placeHolder).length); // Test for the variable "placeHolder" in order to count the number of items by 'key'
 
 	for (var key in placeHolder) {
 		if (placeHolder.hasOwnProperty(key)) {
@@ -34,7 +20,20 @@ var parseFeed = function(data) {
 			});
 		}
 	}
-
+	
+	//Another way to do this...
+	/*
+		for(var key in placeHolder){
+			var value = placeHolder[key];
+			var itemName = value.itemName;
+			var itemTypeName = value.itemTypeName;
+			//console.log(value.itemName);
+			//console.log(value.itemTypeName);
+			items.push({
+				title: itemName,
+				subtitle: itemTypeName
+			});
+		}*/
 
 	return items;
 };
@@ -62,7 +61,7 @@ var text = new UI.Text({
 	backgroundColor:'black'
 });	
 
-// Text element to inform user
+// Second Text element to inform user
 var text2 = new UI.Text({
 	position: new Vector2(0, 60),
 	size: new Vector2(144, 168),
@@ -81,26 +80,31 @@ splashWindow.show();
 
 ajax(
 	{ 
-		url:  'http://krisjhamilton.github.io/xurtest.json', //'https://www.bungie.net/platform/destiny/advisors/xur/?definitions=true',
+		// url: 'http://krisjhamilton.github.io/xurtest.json', // Test json file from a previous week
+		url:  'https://www.bungie.net/platform/destiny/advisors/xur/?definitions=true', // Live link to the Xur JSON endpoint with definitions
 		type: 'json'
 	},
 	function(data) {
-		var xurHere = data.Response.definitions.vendorDetails['2796397637'].summary.visible;
-		//console.log(xurHere);
-		if(xurHere === true){
-			var menuItems = parseFeed(data);
-			var resultsMenu = new UI.Menu({
-				highlightBackgroundColor: 'black',
-				highlightTextColor: 'white',
-				sections: [{
-					title: "Xur's Items",
-					items: menuItems
-				}]
-			});
-			resultsMenu.show();
-			splashWindow.hide();
-		}else{
+		var xursCode = data.Response.definitions.vendorDetails;
+		if(Object.getOwnPropertyNames(xursCode).length === 0){
 			splashWindow.add(text2);
+			return false;
+		}else{
+			var xurHere = data.Response.definitions.vendorDetails['2796397637'].summary.visible;
+			//console.log(xurHere); // For testing the out put of the variable "xurHere"
+			if(xurHere === true){
+				var menuItems = parseFeed(data);
+				var resultsMenu = new UI.Menu({
+					highlightBackgroundColor: 'black',
+					highlightTextColor: 'white',
+					sections: [{
+						title: "Xur's Items",
+						items: menuItems
+					}]
+				});
+				resultsMenu.show();
+				splashWindow.hide();
+			}
 		}
 	},
 	function( error ) {
