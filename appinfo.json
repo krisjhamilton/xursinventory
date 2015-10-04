@@ -4,7 +4,7 @@
         ""
     ],
     "companyName": "akstudio",
-    "longName": "Xur's Inventory",
+    "longName": "Xur's Items",
     "projectType": "pebblejs",
     "resources": {
         "media": [
@@ -37,11 +37,12 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "Xur's Inventory",
+    "shortName": "Xur's Items",
     "uuid": "0d374606-f3c1-4514-b837-d0b4e034faad",
     "versionCode": 1,
     "versionLabel": "1.0",
     "watchapp": {
+        "hiddenApp": false,
         "watchface": false
     }
 }
