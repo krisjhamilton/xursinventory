@@ -29,6 +29,11 @@
                 "type": "font"
             },
             {
+                "file": "images/main_logo_t_w.png",
+                "name": "IMAGES_MAIN_LOGO_T_W_PNG",
+                "type": "png"
+            },
+            {
                 "file": "images/main_logo.png",
                 "menuIcon": true,
                 "name": "IMAGES_MAIN_LOGO_PNG",
@@ -38,6 +43,10 @@
     },
     "sdkVersion": "3",
     "shortName": "Xur's Items",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
     "uuid": "0d374606-f3c1-4514-b837-d0b4e034faad",
     "versionCode": 1,
     "versionLabel": "1.0",
