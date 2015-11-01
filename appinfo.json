@@ -29,6 +29,11 @@
                 "type": "font"
             },
             {
+                "file": "images/main_logo_t_b.png",
+                "name": "IMAGES_MAIN_LOGO_T_B_PNG",
+                "type": "png"
+            },
+            {
                 "file": "images/main_logo_t_w.png",
                 "name": "IMAGES_MAIN_LOGO_T_W_PNG",
                 "type": "png"
